@@ -128,6 +128,7 @@ const npcs = {
     { x:7,  y:14, name:'Librarian',      drawKey:'elder', dialog:'Browse our collection, adventurer.', library:true },
     { x:16, y:14, name:'Bounty Master',  drawKey:'guard', dialog:'The town bounty board. Clear the roads of monsters and the realm pays well.', questBoard:true },
     { x:24, y:14, name:'The Seer',       drawKey:'elder', dialog:'Dark omens gather, child. The realm will need a hero — and I have foreseen that it may be you.', questGiver:'msq_call' },
+    { x:28, y:19, name:'Trialmaster Vorn', drawKey:'guard', dialog:'Seek a true test? The Elemental Trials await — survive the waves and claim your reward.', trials:true },
   ],
   dragons_gate: [
     { x:20, y:4,  name:"Commander Rael",  drawKey:'guard',      dialog:"Dragon's Gate stands between civilization and the abyss. We hold the line here. Move along, soldier." },

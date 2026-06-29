@@ -23,6 +23,7 @@ let combatPlayerPowerStrike = false;
 let combatPlayerQuickStep = false;
 let isSparring = false;
 let isWorldMapEncounter = false;
+let isTrial = false; // true during an Elemental Trial wave (see trials.js)
 let combatItemSelectMode = false;
 let combatLog = [];
 let combatTotalDmg = 0;
@@ -53,6 +54,7 @@ function startCombat(index) {
   combatEnemy = { ...enemies[index] };
   combatEnemyIndex = index;
   isSparring = false;
+  isTrial = false;
   // isWorldMapEncounter is set by checkWorldMapEncounter() before calling here;
   // reset it for normal (non-world-map) combat so the flag doesn't linger.
   if (!combatEnemy.worldMapKey) isWorldMapEncounter = false;
@@ -63,6 +65,7 @@ function startSparring(opponent) {
   combatEnemy = { ...opponent, maxHp: opponent.hp, hp: opponent.hp, gold: [0, 0], isBoss: false };
   combatEnemyIndex = -1;
   isSparring = true;
+  isTrial = false;
   initCombatScreen();
 }
 
@@ -280,6 +283,11 @@ function leaveCombatScreen() {
   if (logEl) logEl.classList.remove('combat-ended');
   document.getElementById('combat-actions').style.display = 'flex';
   combatLocked = false;
+  // Elemental Trial: chain straight into the next wave, or wrap up the run.
+  if (game.trial && game.trial.active) {
+    if (game.trial.finished) finishTrial();
+    else startTrialWave();
+  }
 }
 
 // ─── COMBAT WIN ───────────────────────────────────────────────────────────────
@@ -299,6 +307,34 @@ function combatWin() {
     let xpBonusMult = 1 + ((getEquippedPassives().xpBonus || 0) / 100);
     let xpGained = Math.floor(combatEnemy.xp * intMult * xpBonusMult);
     let winMsg;
+
+    // ── Elemental Trial wave cleared ──
+    // Reads only game.trial fields so combat.js stays decoupled from trialDefs.
+    // leaveCombatScreen() chains the next wave (or calls finishTrial when finished).
+    if (isTrial && game.trial) {
+      let t = game.trial;
+      let clearedWave = t.wave;
+      let waveXp = t.rewardXp * clearedWave;
+      let waveGold = t.rewardGold * clearedWave;
+      game.player.xp += waveXp;
+      game.player.gold += waveGold;
+      while (game.player.xp >= game.player.xpNext) {
+        game.player.xp -= game.player.xpNext;
+        applyLevelUp();
+        addCombatLog(`Level up! You are now level <b class="clog-heal">${game.player.lvl}</b>!`, 'system');
+        toast(`LEVEL UP! Now level ${game.player.lvl}! +3 Skill Pts!`, 'green');
+      }
+      if (!game.flags.trialBest) game.flags.trialBest = {};
+      game.flags.trialBest[t.id] = Math.max(game.flags.trialBest[t.id] || 0, clearedWave);
+      if (clearedWave >= t.totalWaves) t.finished = true;
+      else t.wave = clearedWave + 1;
+      addCombatLog(`<b class="clog-player">Wave ${clearedWave}/${t.totalWaves} cleared!</b> +${waveXp} XP, +${waveGold}g`, 'system');
+      toast(`Wave ${clearedWave}/${t.totalWaves} cleared! +${waveXp}XP +${waveGold}g`, 'green');
+      msg(t.finished ? 'Final wave cleared!' : `Wave ${clearedWave} cleared — brace for wave ${t.wave}!`);
+      saveGame();
+      showBattleEndScreen();
+      return;
+    }
 
     if (isSparring) {
       isSparring = false;
@@ -424,6 +460,21 @@ function playerDeath() {
     combatLocked = false;
     toast('Knocked out in sparring!', 'red');
     msg('You were knocked out! Rest up and try again.');
+    return;
+  }
+
+  // Trial: a defeat ends the run without a corpse or gold loss (like sparring).
+  if (isTrial) {
+    isTrial = false;
+    let t = game.trial || {};
+    let reached = t.wave || 1;
+    document.getElementById('combat-screen').style.display = 'none';
+    game.player.hp = Math.max(1, Math.floor((game.player.maxHp || 1) * 0.3));
+    combatLocked = false;
+    game.trial = null;
+    toast(`Defeated at wave ${reached}.`, 'red');
+    msg(`You fell in ${t.name || 'the Trial'} at wave ${reached}. Grow stronger and return!`);
+    saveGame();
     return;
   }
 

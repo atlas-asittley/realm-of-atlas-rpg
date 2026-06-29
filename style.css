@@ -60,7 +60,7 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
 @keyframes toastOut { from { opacity:1; transform:translateY(0) scale(1); } to { opacity:0; transform:translateY(-14px) scale(0.92); } }
 
 /* ── OVERLAY PANELS ── */
-#combat-screen, #inventory-screen, #shop-screen, #trainer-screen, #sparring-screen, #oc-skills-screen, #library-screen, #gambling-screen, #quest-log-screen, #ending-screen {
+#combat-screen, #inventory-screen, #shop-screen, #trainer-screen, #sparring-screen, #oc-skills-screen, #library-screen, #gambling-screen, #quest-log-screen, #ending-screen, #trial-screen {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(4,4,14,0.97);
   z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;

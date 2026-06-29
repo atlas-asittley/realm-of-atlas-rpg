@@ -82,6 +82,7 @@ function initClickOutsideHandlers() {
     { screenId: 'oc-skills-screen', closeFn: closeOutOfCombatSkills },
     { screenId: 'library-screen',   closeFn: closeLibrary           },
     { screenId: 'quest-log-screen', closeFn: closeQuestLog          },
+    { screenId: 'trial-screen',     closeFn: closeTrials            },
   ];
   for (let { screenId, closeFn } of panels) {
     let screen = document.getElementById(screenId);

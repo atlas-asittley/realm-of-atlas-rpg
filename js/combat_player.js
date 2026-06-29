@@ -248,6 +248,18 @@ function combatRun() {
     return;
   }
 
+  // Trial: fleeing forfeits the run (best wave is already recorded on each clear).
+  if (isTrial) {
+    isTrial = false;
+    let t = game.trial || {};
+    game.trial = null;
+    addCombatLog(`<b class="clog-system">You forfeit the Trial.</b>`, 'system');
+    toast('You left the Trial.', '');
+    msg(`You forfeit ${t.name || 'the Trial'} at wave ${t.wave || 1}.`);
+    showBattleEndScreen();
+    return;
+  }
+
   // Sparring: always allowed to leave
   if (isSparring) {
     isSparring = false;
