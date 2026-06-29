@@ -16,6 +16,21 @@ const itemDefs = {
   acorn:             { name:'Acorn',              type:'consumable', heal:5,  value:10, icon:'🌰', color:'#9d9d9d', rarity:'common',   desc:'A healthy snack. Restores 5 HP.' },
   feather:           { name:'Feather',            type:'material',           value:4,  icon:'🪶', color:'#9d9d9d', rarity:'common',   desc:'A fine bird feather. Used for arrows.' },
   rat_tail:          { name:'Rat Tail',           type:'material',           value:2,  icon:'🐭', color:'#9d9d9d', rarity:'common',   desc:'Not very useful, but someone might want it.' },
+  // ── Crafting materials (drop from combat; see crafting.js rollMaterialDrop) ──
+  iron_ore:      { name:'Iron Ore',      type:'material', value:8,  icon:'⛏', color:'#9d9d9d', rarity:'common',   desc:'Raw ore. The backbone of any forged blade.' },
+  monster_hide:  { name:'Monster Hide',  type:'material', value:6,  icon:'🟫', color:'#9d9d9d', rarity:'common',   desc:'Tough hide stripped from a fallen beast.' },
+  bone_fragment: { name:'Bone Fragment', type:'material', value:5,  icon:'🦴', color:'#9d9d9d', rarity:'common',   desc:'A shard of bone. Useful to a patient crafter.' },
+  ember_shard:   { name:'Ember Shard',   type:'material', value:15, icon:'🔥', color:'#2ecc71', rarity:'uncommon', desc:'A still-warm shard from a fire creature.' },
+  frost_shard:   { name:'Frost Shard',   type:'material', value:15, icon:'❄', color:'#2ecc71', rarity:'uncommon', desc:'A sliver of everlasting ice.' },
+  void_essence:  { name:'Void Essence',  type:'material', value:40, icon:'🌌', color:'#3498db', rarity:'rare',     desc:'Condensed nothingness. Handle with care.' },
+  // ── Craftable results (see data_recipes.js). No classRestriction — any class may use. ──
+  hide_armor:      { name:'Hide Armor',      type:'armor',  slot:'CHEST',     def:6,  value:90,  icon:'🛡', color:'#9d9d9d', rarity:'common',   desc:'Sturdy armor stitched from monster hide.' },
+  traveler_boots:  { name:"Traveler's Boots", type:'armor', slot:'FEET',      def:3,  value:120, icon:'🥾', color:'#2ecc71', rarity:'uncommon', statBonuses:{DEX:1}, desc:'Light boots for the long road.' },
+  bone_charm:      { name:'Bone Charm',      type:'armor',  slot:'AMULET',    def:0,  value:150, icon:'📿', color:'#2ecc71', rarity:'uncommon', statBonuses:{STR:1,CON:1}, desc:'A charm of bound bone. Wards the wearer.' },
+  reinforced_blade:{ name:'Reinforced Blade', type:'weapon', slot:'MAIN_HAND', atk:9,  value:200, icon:'⚔', color:'#2ecc71', rarity:'uncommon', desc:'A dependable forged blade. Anyone can wield it.' },
+  ember_brand:     { name:'Ember Brand',     type:'weapon', slot:'MAIN_HAND', atk:14, value:450, icon:'🔥', color:'#3498db', rarity:'rare',     damageType:'fire', desc:'A blade that burns with forged ember.' },
+  frost_edge:      { name:'Frost Edge',      type:'weapon', slot:'MAIN_HAND', atk:14, value:450, icon:'❄', color:'#3498db', rarity:'rare',     damageType:'ice',  desc:'Its edge never melts, and never warms.' },
+  void_cleaver:    { name:'Void Cleaver',    type:'weapon', slot:'MAIN_HAND', atk:22, value:900, icon:'🌌', color:'#9b59b6', rarity:'epic',     damageType:'dark', desc:'Forged from void essence. It hungers.' },
   // ── Common ────────────────────────────────────────────────────────────────
   wooden_sword:  { name:'Wooden Sword',    type:'weapon', slot:'MAIN_HAND', atk:3,  value:0,    icon:'⚔', color:'#9d9d9d', rarity:'common',    classRestriction:['paladin'] },
   cloth_armor:   { name:'Cloth Armor',     type:'armor',  slot:'CHEST',     def:2,  value:0,    icon:'🛡', color:'#9d9d9d', rarity:'common'    },

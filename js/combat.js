@@ -351,6 +351,7 @@ function combatWin() {
       game.player.gold += goldDrop;
       game.kills++;
       recordEnemyKill(combatEnemy);
+      rollMaterialDrop(combatEnemy);
       // Put this enemy type on a 10-step cooldown
       if (combatEnemy.worldMapKey) worldEncounterCooldowns[combatEnemy.worldMapKey] = 10;
       winMsg = `Victory! +${xpGained}XP +${goldDrop}g`;
@@ -373,6 +374,7 @@ function combatWin() {
       game.player.gold += goldDrop;
       game.kills++;
       recordEnemyKill(combatEnemy);
+      rollMaterialDrop(combatEnemy);
       winMsg = `Victory! +${xpGained}XP +${goldDrop}g`;
       addCombatLog(`<b class="clog-player">Victory!</b>`, 'player');
       addCombatLog(`Total damage dealt: <b class="clog-num">${combatTotalDmg}</b>`, 'system');

@@ -60,7 +60,7 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
 @keyframes toastOut { from { opacity:1; transform:translateY(0) scale(1); } to { opacity:0; transform:translateY(-14px) scale(0.92); } }
 
 /* ── OVERLAY PANELS ── */
-#combat-screen, #inventory-screen, #shop-screen, #trainer-screen, #sparring-screen, #oc-skills-screen, #library-screen, #gambling-screen, #quest-log-screen, #ending-screen, #trial-screen {
+#combat-screen, #inventory-screen, #shop-screen, #trainer-screen, #sparring-screen, #oc-skills-screen, #library-screen, #gambling-screen, #quest-log-screen, #ending-screen, #trial-screen, #forge-screen {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(4,4,14,0.97);
   z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
@@ -433,6 +433,18 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
 .ending-title { font-size: 28px; color: #f1c40f; letter-spacing: 6px; text-shadow: 0 0 30px rgba(241,196,15,0.6); margin-bottom: 18px; }
 .ending-body { color: #c8c8e0; font-size: 9px; line-height: 1.9; }
 .ending-sub { color: #888; font-size: 8px; }
+
+/* ── FORGE / CRAFTING ── */
+#forge-list { width: 100%; max-width: 440px; max-height: 62vh; overflow-y: auto; }
+.forge-recipe { background: #080816; border: 1px solid #1a1a3a; border-radius: 4px; padding: 10px 12px; margin-bottom: 8px; }
+.forge-recipe-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.forge-recipe-name { font-size: 9px; letter-spacing: 0.5px; }
+.forge-recipe-stat { color: #9aa4b8; font-size: 7px; margin: 4px 0 6px; }
+.forge-recipe-mats { display: flex; flex-wrap: wrap; gap: 6px; }
+.forge-mat { font-size: 7px; padding: 2px 5px; border-radius: 3px; border: 1px solid #222; }
+.forge-mat-ok { color: #2ecc71; border-color: #1e5a36; }
+.forge-mat-missing { color: #c0392b; border-color: #5a1e1e; }
+.forge-btn { font-size: 7px; padding: 5px 12px; width: auto; flex-shrink: 0; }
 
 /* ── CLOSE BUTTON ── */
 .close-btn {

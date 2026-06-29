@@ -83,6 +83,7 @@ function initClickOutsideHandlers() {
     { screenId: 'library-screen',   closeFn: closeLibrary           },
     { screenId: 'quest-log-screen', closeFn: closeQuestLog          },
     { screenId: 'trial-screen',     closeFn: closeTrials            },
+    { screenId: 'forge-screen',     closeFn: closeForge             },
   ];
   for (let { screenId, closeFn } of panels) {
     let screen = document.getElementById(screenId);
