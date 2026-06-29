@@ -79,6 +79,7 @@
     <button class="hud-menu-btn" id="btn-inv">INVENTORY</button>
     <button class="hud-menu-btn" onclick="openOutOfCombatSkills();closeHudMenu()">&#9733; SKILLS</button>
     <button class="hud-menu-btn" onclick="openQuestLog();closeHudMenu()">&#128220; QUESTS</button>
+    <button class="hud-menu-btn" onclick="openReputation();closeHudMenu()">&#127983; FACTIONS</button>
     <button class="hud-menu-btn hud-new-game-btn" onclick="confirmNewGame()">&#8635; NEW GAME</button>
   </div>
   <button id="hud-menu-toggle" onclick="toggleHudMenu()">&#9776; MENU</button>
@@ -480,6 +481,18 @@
   </div>
 </div>
 
+<div id="reputation-screen">
+  <div class="panel-wrap" style="max-width:440px">
+    <button class="panel-close-btn" onclick="closeReputation()">&#10005;</button>
+    <div class="panel-header">
+      <div class="panel-title">&#127983; REPUTATION</div>
+      <div class="panel-subtitle">STANDING WITH THE FACTIONS</div>
+    </div>
+    <div id="reputation-list"></div>
+    <button class="btn" style="margin-top:12px;width:100%" onclick="closeReputation()">CLOSE</button>
+  </div>
+</div>
+
 <!-- DEATH -->
 <div id="death-screen">
   <h2>YOU DIED</h2>
@@ -501,6 +514,7 @@
 <script src="js/data_trials.js"></script>
 <script src="js/data_recipes.js"></script>
 <script src="js/data_companions.js"></script>
+<script src="js/data_factions.js"></script>
 <script src="js/data.js"></script>
 <script src="js/particles.js"></script>
 <script src="js/tiles_areas.js"></script>
@@ -531,6 +545,7 @@
 <script src="js/ui_quests.js"></script>
 <script src="js/ui_crafting.js"></script>
 <script src="js/companions.js"></script>
+<script src="js/factions.js"></script>
 <script src="js/trials.js"></script>
 <script src="js/ui_gambling.js"></script>
 <script src="js/debug.js"></script>

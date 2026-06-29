@@ -109,6 +109,7 @@ function turnInQuest(id) {
     }
   }
   if (r.items) r.items.forEach(it => addInventoryItem(it));
+  if (r.rep && typeof addFactionRep === 'function') for (let f in r.rep) addFactionRep(f, r.rep[f]);
 
   game.flags.quests[id] = { status: 'done' };
 

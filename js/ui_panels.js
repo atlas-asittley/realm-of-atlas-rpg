@@ -61,6 +61,9 @@ function itemStatText(item) {
 // ─── SHOP ─────────────────────────────────────────────────────────────────────
 function getDiscountedPrice(basePrice) {
   let discount = (game.player.CHA || 10) * 0.005;
+  // Reputation discount with the faction whose shop is currently open (set in interactNPC).
+  if (typeof activeShopFaction !== 'undefined' && activeShopFaction) discount += factionDiscount(activeShopFaction);
+  discount = Math.min(discount, 0.5);
   return Math.max(1, Math.floor(basePrice * (1 - discount)));
 }
 

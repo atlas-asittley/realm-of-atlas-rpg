@@ -85,6 +85,7 @@ function initClickOutsideHandlers() {
     { screenId: 'trial-screen',     closeFn: closeTrials            },
     { screenId: 'forge-screen',     closeFn: closeForge             },
     { screenId: 'companions-screen', closeFn: closeCompanions       },
+    { screenId: 'reputation-screen', closeFn: closeReputation       },
   ];
   for (let { screenId, closeFn } of panels) {
     let screen = document.getElementById(screenId);

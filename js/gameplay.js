@@ -283,6 +283,8 @@ function movePlayer(dx, dy) {
 }
 
 function interactNPC(npc) {
+  // Track which faction's shop (if any) is being opened so prices reflect reputation.
+  activeShopFaction = factionOfNpc(npc);
   if (npc.questBoard) { msg(npc.dialog); openQuestLog(); return; }
   if (npc.questGiver) { handleQuestGiver(npc); return; }
   if (npc.dungeonGuard) {
@@ -294,7 +296,8 @@ function interactNPC(npc) {
     }
     return;
   }
-  msg(npc.dialog);
+  let greet = factionGreeting(npc);
+  msg(greet ? greet + ' ' + npc.dialog : npc.dialog);
   if (npc.shop)            openShop();
   if (npc.elvenShop)       openElvenShop();
   if (npc.silverforgeShop) openSilverforge();
