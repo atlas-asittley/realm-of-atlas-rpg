@@ -74,16 +74,17 @@ function rollRoadsideEvent() {
     return true;
   }
 
-  // Ambush: an elite springs from the roadside (resolved as a normal fight so its
-  // guaranteed loot drops and it is removed from the map on victory).
+  // Ambush: an elite springs from the roadside. Routed as a world-map encounter (like the
+  // normal world-map spawn) so it is spliced from enemies[] on BOTH victory and flight.
   let pool = ['wolf', 'bandit', 'goblin'];
   let key = pool[Math.floor(Math.random() * pool.length)];
   let type = enemyTypes[key];
   if (!type) return false;
-  let enemy = eliteUpgrade({ ...type, typeKey: key, x: game.player.x, y: game.player.y, maxHp: type.hp, opacity: 1, isBoss: false }, true);
+  let enemy = eliteUpgrade({ ...type, typeKey: key, worldMapKey: key, x: game.player.x, y: game.player.y, maxHp: type.hp, opacity: 1, isBoss: false }, true);
   enemies.push(enemy);
   toast('Ambush!', 'red');
   msg(`A ${enemy.name} ambushes you from the roadside!`);
+  isWorldMapEncounter = true;
   startCombat(enemies.length - 1);
   return true;
 }

@@ -292,6 +292,15 @@ function leaveCombatScreen() {
 
 // ─── COMBAT WIN ───────────────────────────────────────────────────────────────
 
+// Post-kill hooks for a real (non-sparring, non-trial) defeat. Centralised here so new
+// "on enemy defeated" systems get one home instead of being duplicated across combatWin's
+// world-map and normal branches.
+function onEnemyDefeated(enemy) {
+  recordEnemyKill(enemy);        // quest slay objectives + lifetime kill counts (quests.js)
+  rollMaterialDrop(enemy);       // crafting material drops (crafting.js)
+  awardFactionRepForKill(enemy); // faction reputation (factions.js)
+}
+
 function combatWin() {
   // Immediately remove the defeated enemy from the map so it doesn't reappear
   if (combatEnemyIndex >= 0) {
@@ -350,9 +359,7 @@ function combatWin() {
       let goldDrop = rollGoldDrop(combatEnemy);
       game.player.gold += goldDrop;
       game.kills++;
-      recordEnemyKill(combatEnemy);
-      rollMaterialDrop(combatEnemy);
-      awardFactionRepForKill(combatEnemy);
+      onEnemyDefeated(combatEnemy);
       // Put this enemy type on a 10-step cooldown
       if (combatEnemy.worldMapKey) worldEncounterCooldowns[combatEnemy.worldMapKey] = 10;
       winMsg = `Victory! +${xpGained}XP +${goldDrop}g`;
@@ -374,9 +381,7 @@ function combatWin() {
       let goldDrop = rollGoldDrop(combatEnemy);
       game.player.gold += goldDrop;
       game.kills++;
-      recordEnemyKill(combatEnemy);
-      rollMaterialDrop(combatEnemy);
-      awardFactionRepForKill(combatEnemy);
+      onEnemyDefeated(combatEnemy);
       winMsg = `Victory! +${xpGained}XP +${goldDrop}g`;
       addCombatLog(`<b class="clog-player">Victory!</b>`, 'player');
       addCombatLog(`Total damage dealt: <b class="clog-num">${combatTotalDmg}</b>`, 'system');

@@ -65,6 +65,9 @@ function startTrialWave() {
     isBoss: false, isElite: false, drops: undefined, dropChance: 0,
   };
   combatEnemyIndex = -1;
+  // Mirror startCombat/startSparring: clear the other mode flags so none can leak into a wave.
+  isSparring = false;
+  isWorldMapEncounter = false;
   isTrial = true;
   initCombatScreen();
 }

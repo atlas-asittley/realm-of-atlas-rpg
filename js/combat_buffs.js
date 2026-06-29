@@ -273,7 +273,10 @@ function tickBuffs() {
 
   // Hired companion: the active companion acts each round (persists across combats).
   // Mirrors the summon pattern above, including landing the killing blow itself.
-  if (game.player.companion && typeof companionDefs !== 'undefined' && combatEnemy.hp > 0) {
+  // Excluded from sparring (it's risk-free practice — a companion would trivialise it and
+  // could farm the win XP). Allowed in Trials by design: bringing your hired ally is a fair
+  // choice; dismiss the companion for a pure-challenge run.
+  if (game.player.companion && !isSparring && typeof companionDefs !== 'undefined' && combatEnemy.hp > 0) {
     let comp = companionDefs[game.player.companion];
     if (comp) {
       let amt = companionRoundAmount(comp);
