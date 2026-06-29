@@ -256,7 +256,7 @@ function movePlayer(dx, dy) {
   if (tile === T.WORLD_BOSS_DRAGON && !game.flags.boss_elder_dragon_dead) { startWorldBossCombat('elder_dragon', nx, ny); return; }
   if (tile === T.WORLD_BOSS_GOLEM  && !game.flags.boss_titan_golem_dead)  { startWorldBossCombat('titan_golem',  nx, ny); return; }
   if (tile === T.WORLD_BOSS_HYDRA  && !game.flags.boss_void_hydra_dead)   { startWorldBossCombat('void_hydra',   nx, ny); return; }
-  if (game.currentMap === 'world') { checkWorldMapEncounter(tile); return; }
+  if (game.currentMap === 'world') { if (rollRoadsideEvent()) return; checkWorldMapEncounter(tile); return; }
   // Random enemy spawn on floor tiles in dungeons, training grounds, and new areas.
   // Enemy spawns off-screen — at least 5 tiles (Manhattan) away from the player.
   let spawnChance = isDungeonMap(game.currentMap) ? 0.08 : game.currentMap === 'training_grounds' ? 0.06 : isNewArea(game.currentMap) ? 0.06 : 0;
@@ -267,7 +267,7 @@ function movePlayer(dx, dy) {
         let typeKey = pool.types[Math.floor(Math.random() * pool.types.length)];
         let type = enemyTypes[typeKey];
         let spawnPos = randomFloorTile(nx, ny, 5);
-        if (spawnPos) enemies.push({ ...type, typeKey, x: spawnPos.x, y: spawnPos.y, maxHp: type.hp, opacity: 1, isBoss: false });
+        if (spawnPos) enemies.push(eliteUpgrade({ ...type, typeKey, x: spawnPos.x, y: spawnPos.y, maxHp: type.hp, opacity: 1, isBoss: false }));
       }
     } else {
       let floor = game.currentMap === 'training_grounds' ? 0 : currentFloor;
@@ -276,7 +276,7 @@ function movePlayer(dx, dy) {
       let type = enemyTypes[typeKey];
       let spawnPos = randomFloorTile(nx, ny, 5);
       if (spawnPos) {
-        enemies.push({ ...type, typeKey, x: spawnPos.x, y: spawnPos.y, maxHp: type.hp, opacity: 1, isBoss: false });
+        enemies.push(eliteUpgrade({ ...type, typeKey, x: spawnPos.x, y: spawnPos.y, maxHp: type.hp, opacity: 1, isBoss: false }));
       }
     }
   }
@@ -333,6 +333,7 @@ function interactNPC(npc) {
   if (npc.brimstoneShop)  openBrimstoneShop();
   if (npc.trainer) openTrainer();
   if (npc.sparring) openSparring();
+  if (npc.trials) openTrials();
   if (npc.library) openLibrary();
   if (npc.gambling) openGamblingMenu();
 }

@@ -111,7 +111,7 @@ function spawnAreaEnemies(areaKey, playerX, playerY) {
     let typeKey = pool.types[Math.floor(Math.random() * pool.types.length)];
     let type = enemyTypes[typeKey];
     let pos = randomFloorTile(playerX, playerY, 5);
-    if (pos) enemies.push({ ...type, typeKey, x: pos.x, y: pos.y, maxHp: type.hp, opacity: 1 });
+    if (pos) enemies.push(eliteUpgrade({ ...type, typeKey, x: pos.x, y: pos.y, maxHp: type.hp, opacity: 1 }));
   }
   // Spawn boss (~33% chance)
   if (pool.boss && Math.random() < 0.33) {
@@ -184,7 +184,7 @@ function spawnEnemies(floor, playerX, playerY) {
       bossAdded = true;
     }
     let pos = randomFloorTile(playerX, playerY, 5);
-    if (pos) enemies.push({ ...type, typeKey, x: pos.x, y: pos.y, maxHp: type.hp, opacity: 1 });
+    if (pos) enemies.push(eliteUpgrade({ ...type, typeKey, x: pos.x, y: pos.y, maxHp: type.hp, opacity: 1 }));
   }
   // Rare Slime King spawn in Training Grounds (~20% chance)
   if (floor === 0 && Math.random() < 0.2) {
