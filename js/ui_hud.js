@@ -81,6 +81,7 @@ function initClickOutsideHandlers() {
     { screenId: 'sparring-screen',  closeFn: closeSparring          },
     { screenId: 'oc-skills-screen', closeFn: closeOutOfCombatSkills },
     { screenId: 'library-screen',   closeFn: closeLibrary           },
+    { screenId: 'quest-log-screen', closeFn: closeQuestLog          },
   ];
   for (let { screenId, closeFn } of panels) {
     let screen = document.getElementById(screenId);
@@ -225,6 +226,16 @@ function loadGame() {
     if (game.player.maxHp < expectedMaxHp) game.player.maxHp = expectedMaxHp;
     game.currentMap = state.currentMap || 'town';
     game.flags = state.flags || {};
+    // Quest system state lives in flags; ensure containers exist for older saves.
+    if (!game.flags.quests) game.flags.quests = {};
+    if (!game.flags.killCounts) game.flags.killCounts = {};
+    // Migrate the legacy hardcoded rat-tails quest into the generic quest system.
+    if (game.flags.questRatTails) {
+      let q = game.flags.questRatTails;
+      if (q.complete) game.flags.quests.rat_tails = { status: 'done' };
+      else if (q.started && !game.flags.quests.rat_tails) game.flags.quests.rat_tails = { status: 'active', slayBase: {} };
+      delete game.flags.questRatTails;
+    }
     game.kills = state.kills || 0;
     game.corpse = state.corpse || null;
     currentFloor = state.currentFloor || 0;

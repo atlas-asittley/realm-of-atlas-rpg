@@ -78,6 +78,7 @@
     <button class="hud-menu-btn" id="btn-stats">STATS</button>
     <button class="hud-menu-btn" id="btn-inv">INVENTORY</button>
     <button class="hud-menu-btn" onclick="openOutOfCombatSkills();closeHudMenu()">&#9733; SKILLS</button>
+    <button class="hud-menu-btn" onclick="openQuestLog();closeHudMenu()">&#128220; QUESTS</button>
     <button class="hud-menu-btn hud-new-game-btn" onclick="confirmNewGame()">&#8635; NEW GAME</button>
   </div>
   <button id="hud-menu-toggle" onclick="toggleHudMenu()">&#9776; MENU</button>
@@ -417,6 +418,18 @@
   </div>
 </div>
 
+<div id="quest-log-screen">
+  <div class="panel-wrap" style="max-width:460px">
+    <button class="panel-close-btn" onclick="closeQuestLog()">&#10005;</button>
+    <div class="panel-header">
+      <div class="panel-title">&#128220; QUESTS</div>
+      <div class="panel-subtitle">BOUNTIES &amp; TASKS</div>
+    </div>
+    <div id="quest-log-list"></div>
+    <button class="btn" style="margin-top:12px;width:100%" onclick="closeQuestLog()">CLOSE</button>
+  </div>
+</div>
+
 <!-- DEATH -->
 <div id="death-screen">
   <h2>YOU DIED</h2>
@@ -434,6 +447,7 @@
 <script src="js/data_enemies.js"></script>
 <script src="js/data_items.js"></script>
 <script src="js/data_skills.js"></script>
+<script src="js/data_quests.js"></script>
 <script src="js/data.js"></script>
 <script src="js/particles.js"></script>
 <script src="js/tiles_areas.js"></script>
@@ -444,6 +458,7 @@
 <script src="js/sprites.js"></script>
 <script src="js/render.js"></script>
 <script src="js/gameplay.js"></script>
+<script src="js/quests.js"></script>
 <script src="js/combat_mechanics.js"></script>
 <script src="js/combat_player.js"></script>
 <script src="js/combat_enemy.js"></script>
@@ -458,6 +473,7 @@
 <script src="js/ui_inventory.js"></script>
 <script src="js/ui_combat.js"></script>
 <script src="js/ui_dialog.js"></script>
+<script src="js/ui_quests.js"></script>
 <script src="js/ui_gambling.js"></script>
 <script src="js/debug.js"></script>
 <script src="js/input.js"></script>

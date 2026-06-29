@@ -60,7 +60,7 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
 @keyframes toastOut { from { opacity:1; transform:translateY(0) scale(1); } to { opacity:0; transform:translateY(-14px) scale(0.92); } }
 
 /* ── OVERLAY PANELS ── */
-#combat-screen, #inventory-screen, #shop-screen, #trainer-screen, #sparring-screen, #oc-skills-screen, #library-screen, #gambling-screen {
+#combat-screen, #inventory-screen, #shop-screen, #trainer-screen, #sparring-screen, #oc-skills-screen, #library-screen, #gambling-screen, #quest-log-screen {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(4,4,14,0.97);
   z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
@@ -404,6 +404,27 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
 .shop-item-restricted { opacity: 0.55; }
 .shop-item-restricted:hover { border-color: #555; }
 .shop-class-restriction { color: #884400; font-size: 7px; margin-left: 4px; font-style: italic; }
+.shop-usable-by { color: #6a7a8a; font-size: 8px; margin-top: 2px; letter-spacing: 1px; }
+
+/* ── QUEST LOG ── */
+#quest-log-list { width: 100%; max-width: 440px; max-height: 62vh; overflow-y: auto; }
+.quest-group-title { color: #f1c40f; font-size: 8px; letter-spacing: 2px; margin: 14px 0 6px; opacity: 0.8; }
+.quest-group-title:first-child { margin-top: 0; }
+.quest-entry { background: #080816; border: 1px solid #1a1a3a; border-radius: 4px; padding: 10px 12px; margin-bottom: 8px; }
+.quest-entry.quest-done { opacity: 0.55; }
+.quest-entry-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.quest-name { color: #d8d8f0; font-size: 9px; letter-spacing: 0.5px; }
+.quest-desc { color: #888; font-size: 7px; margin: 5px 0 7px; line-height: 1.5; }
+.quest-source { color: #5a6a8a; font-style: italic; }
+.quest-obj { color: #9aa4b8; font-size: 7px; margin: 2px 0; }
+.quest-obj-done { color: #2ecc71; }
+.quest-obj-count { color: #f1c40f; margin-left: 4px; }
+.quest-reward { color: #c9a227; font-size: 7px; margin-top: 6px; }
+.quest-btn { font-size: 7px; padding: 5px 10px; width: auto; flex-shrink: 0; }
+.quest-btn-ready { border-color: #2ecc71; color: #2ecc71; }
+.quest-status-tag { font-size: 6px; letter-spacing: 1px; color: #5a6a8a; flex-shrink: 0; }
+.quest-done-tag { color: #2ecc71; }
+.quest-empty { color: #666; font-size: 8px; text-align: center; padding: 30px 10px; line-height: 1.6; }
 
 /* ── CLOSE BUTTON ── */
 .close-btn {
@@ -694,6 +715,8 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
   display: flex; align-items: center; gap: 10px; font-size: 8px;
 }
 .skill-learn-row.skill-learned { border-color: #1a3a1a; }
+.skill-learn-row.skill-locked { opacity: 0.45; filter: grayscale(0.6); cursor: not-allowed; }
+.skill-learn-row.skill-locked .trainer-btn { pointer-events: none; }
 .skill-icon { font-size: 16px; min-width: 22px; text-align: center; }
 .skill-learn-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
 .skill-learn-name { color: #c0c8f0; font-size: 8px; letter-spacing: 0.5px; }

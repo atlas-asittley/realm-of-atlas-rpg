@@ -115,7 +115,7 @@ const SET_DEFS = {
 const npcs = {
   training_grounds: [
     { x:17, y:6, name:'Old Guard', drawKey:'guard', dialog:"Welcome to the Training Grounds! These peaceful gardens are home to rabbits, squirrels, birds, and mice. Train here before venturing into the wider world!" },
-    { x:24, y:6, name:'Old Farmer', drawKey:'elder', questRatTailsNPC:true, dialog:"Those blasted mice in here... I've been trying to get rid of them for years. If you bring me 10 rat tails, I'll make it worth your while. Deal?" }
+    { x:24, y:6, name:'Old Farmer', drawKey:'elder', questGiver:'rat_tails', dialog:"Those blasted mice in here... I've been trying to get rid of them for years. If you bring me 10 rat tails, I'll make it worth your while. Deal?" }
   ],
   town: [
     { x:12, y:14, name:'Shopkeeper', drawKey:'shopkeeper', dialog:'Welcome! Browse my wares.', shop:true },
@@ -126,6 +126,7 @@ const npcs = {
     { x:34, y:14, name:'Master',     drawKey:'elder',      dialog:'Spend your skill points to grow stronger. Visit me after leveling up!', trainer:true },
     { x:34, y:26, name:'Sparring Master', drawKey:'guard', dialog:'Step into the ring and test your skills! No death here — only glory.', sparring:true },
     { x:7,  y:14, name:'Librarian',      drawKey:'elder', dialog:'Browse our collection, adventurer.', library:true },
+    { x:16, y:14, name:'Bounty Master',  drawKey:'guard', dialog:'The town bounty board. Clear the roads of monsters and the realm pays well.', questBoard:true },
   ],
   dragons_gate: [
     { x:20, y:4,  name:"Commander Rael",  drawKey:'guard',      dialog:"Dragon's Gate stands between civilization and the abyss. We hold the line here. Move along, soldier." },

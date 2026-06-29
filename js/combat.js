@@ -314,6 +314,7 @@ function combatWin() {
       let goldDrop = rollGoldDrop(combatEnemy);
       game.player.gold += goldDrop;
       game.kills++;
+      recordEnemyKill(combatEnemy);
       // Put this enemy type on a 10-step cooldown
       if (combatEnemy.worldMapKey) worldEncounterCooldowns[combatEnemy.worldMapKey] = 10;
       winMsg = `Victory! +${xpGained}XP +${goldDrop}g`;
@@ -335,6 +336,7 @@ function combatWin() {
       let goldDrop = rollGoldDrop(combatEnemy);
       game.player.gold += goldDrop;
       game.kills++;
+      recordEnemyKill(combatEnemy);
       winMsg = `Victory! +${xpGained}XP +${goldDrop}g`;
       addCombatLog(`<b class="clog-player">Victory!</b>`, 'player');
       addCombatLog(`Total damage dealt: <b class="clog-num">${combatTotalDmg}</b>`, 'system');
@@ -350,10 +352,6 @@ function combatWin() {
           addCombatLog(`Dropped: <b class="clog-heal">${itemDefs[itemId].name}</b>!`, 'system');
           toast(`Dropped: ${itemDefs[itemId].name}!`, 'green');
           dropped = true;
-          // Track rat_tail drops for the quest
-          if (itemId === 'rat_tail' && game.flags.questRatTails && game.flags.questRatTails.started && !game.flags.questRatTails.complete) {
-            game.flags.questRatTails.count = game.inventory.filter(id => id === 'rat_tail').length;
-          }
         }
       }
       if (!dropped) {

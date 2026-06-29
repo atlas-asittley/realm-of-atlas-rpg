@@ -283,36 +283,8 @@ function movePlayer(dx, dy) {
 }
 
 function interactNPC(npc) {
-  if (npc.questRatTailsNPC) {
-    if (!game.flags.questRatTails) game.flags.questRatTails = { started: false, count: 0, complete: false };
-    let q = game.flags.questRatTails;
-    if (q.complete) {
-      msg("Old Farmer: \"You've already rid these grounds of those blasted mice. Thank you, adventurer!\"");
-      return;
-    }
-    let tailCount = game.inventory.filter(id => id === 'rat_tail').length;
-    if (!q.started) {
-      q.started = true;
-      q.count = 0;
-      toast('Quest started: Rat Tails (0/10)', 'green');
-      msg("Old Farmer: \"Those blasted mice in here... I've been trying to get rid of them for years. If you bring me 10 rat tails, I'll make it worth your while. Deal?\"");
-    } else if (tailCount >= 10) {
-      // Remove 10 rat_tails from inventory
-      let removed = 0;
-      for (let i = game.inventory.length - 1; i >= 0 && removed < 10; i--) {
-        if (game.inventory[i] === 'rat_tail') { removeInventoryItem(i); removed++; }
-      }
-      addInventoryItem('ratcatchers_amulet');
-      q.complete = true;
-      q.count = 10;
-      toast("Quest Complete! Received Ratcatcher's Amulet!", 'green');
-      msg("Old Farmer: \"By the harvest gods, you actually did it! Take this amulet — it's served me well, but you've earned it.\"");
-    } else {
-      q.count = tailCount;
-      msg(`Old Farmer: "Keep hunting those mice! You've got ${tailCount}/10 rat tails so far."`);
-    }
-    return;
-  }
+  if (npc.questBoard) { msg(npc.dialog); openQuestLog(); return; }
+  if (npc.questGiver) { handleQuestGiver(npc); return; }
   if (npc.dungeonGuard) {
     if (game.player.lvl >= (npc.minLevel || 5) || game.flags.dragonsgateOpen) {
       game.flags.dragonsgateOpen = true;
