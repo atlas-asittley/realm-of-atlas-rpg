@@ -370,6 +370,10 @@ function renderCombatSkills() {
 
   for (let skillId of learned) {
     let skill = skillDefs[skillId];
+    // Out-of-combat-only skills (lockpicking, scouting, foraging, flight) have no use in a
+    // fight and previously wasted the player's turn — they live on the out-of-combat skills
+    // screen, so keep them out of the combat menu entirely.
+    if (skill.noCombat) continue;
     // Passive skills: collect for display but don't show as buttons
     if (skill.passive) {
       passiveItems.push(skill);

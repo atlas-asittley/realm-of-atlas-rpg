@@ -179,7 +179,8 @@ function combatUseSkill(skillId) {
         toast(`Assassinate failed! Enemy HP must be below 20%.`, 'red');
         setCombatMsg(`Assassinate failed! Enemy HP too high (need < 20%).`);
         updateCombatUI();
-        combatLocked = false;
+        // The attempt still spends the turn — let the enemy act (prevents free spamming).
+        setTimeout(() => doEnemyTurn(`Assassinate failed!`), 500);
       }
       break;
     }
@@ -202,7 +203,7 @@ function combatUseSkill(skillId) {
         let stolenId = stealDrops[Math.floor(Math.random() * stealDrops.length)];
         let stolenDef = itemDefs[stolenId];
         let stolenName = stolenDef ? stolenDef.name : stolenId;
-        game.inventory.push(stolenId);
+        addInventoryItem(stolenId);
         addCombatLog(`💰 Steal! You swiped <b>${stolenName}</b> from <b>${combatEnemy.name}</b>!`, 'player');
         setCombatMsg(`Steal! You got: ${stolenName}!`);
         toast(`Stole ${stolenName}!`, 'gold');
@@ -341,7 +342,7 @@ function combatUseSkill(skillId) {
       incrementSkillXP('forage');
       let foragePool = ['herb_potion', 'big_herb_potion', 'antidote'];
       let foragedId = foragePool[Math.floor(Math.random() * foragePool.length)];
-      game.inventory.push(foragedId);
+      addInventoryItem(foragedId);
       let foragedName = (itemDefs[foragedId] || {}).name || foragedId;
       addCombatLog(`🌾 Forage! You found a <b>${foragedName}</b>!`, 'player');
       setCombatMsg(`Forage! Found: ${foragedName}!`);
