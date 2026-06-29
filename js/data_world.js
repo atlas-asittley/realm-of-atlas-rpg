@@ -130,6 +130,7 @@ const npcs = {
     { x:24, y:14, name:'The Seer',       drawKey:'elder', dialog:'Dark omens gather, child. The realm will need a hero — and I have foreseen that it may be you.', questGiver:'msq_call' },
     { x:28, y:19, name:'Trialmaster Vorn', drawKey:'guard', dialog:'Seek a true test? The Elemental Trials await — survive the waves and claim your reward.', trials:true },
     { x:12, y:19, name:'Blacksmith Borin', drawKey:'shopkeeper', dialog:'Bring me materials from your travels and I\'ll forge you something worth carrying.', forge:true },
+    { x:24, y:26, name:'Guildmaster Dunn', drawKey:'guard', dialog:'Adventuring alone is a short career. Hire a companion — they\'ll fight at your side.', companions:true },
   ],
   dragons_gate: [
     { x:20, y:4,  name:"Commander Rael",  drawKey:'guard',      dialog:"Dragon's Gate stands between civilization and the abyss. We hold the line here. Move along, soldier." },

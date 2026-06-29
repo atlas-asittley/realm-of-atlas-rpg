@@ -271,6 +271,26 @@ function tickBuffs() {
     if (combatEnemy.hp <= 0) { updateCombatUI(); combatWin(); return true; }
   }
 
+  // Hired companion: the active companion acts each round (persists across combats).
+  // Mirrors the summon pattern above, including landing the killing blow itself.
+  if (game.player.companion && typeof companionDefs !== 'undefined' && combatEnemy.hp > 0) {
+    let comp = companionDefs[game.player.companion];
+    if (comp) {
+      let amt = companionRoundAmount(comp);
+      if (comp.role === 'healer') {
+        if (game.player.hp < game.player.maxHp) {
+          game.player.hp = Math.min(game.player.maxHp, game.player.hp + amt);
+          addCombatLog(`${comp.icon} ${comp.name} heals you for <b class="clog-heal">${amt}</b>!`, 'player');
+        }
+      } else {
+        combatEnemy.hp -= amt;
+        combatTotalDmg += amt;
+        addCombatLog(`${comp.icon} ${comp.name} strikes <b>${combatEnemy.name}</b> for <b class="clog-num">${amt}</b>!`, 'player');
+        if (combatEnemy.hp <= 0) { updateCombatUI(); combatWin(); return true; }
+      }
+    }
+  }
+
   // Tick enemy debuffs that decay every turn (polymorph)
   tickEnemyDebuffs();
 

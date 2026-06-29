@@ -335,6 +335,7 @@ function interactNPC(npc) {
   if (npc.sparring) openSparring();
   if (npc.trials) openTrials();
   if (npc.forge) openForge();
+  if (npc.companions) openCompanions();
   if (npc.library) openLibrary();
   if (npc.gambling) openGamblingMenu();
 }
