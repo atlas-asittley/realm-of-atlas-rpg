@@ -68,4 +68,46 @@ const questDefs = {
     rewards: { gold: 1000, xp: 800 },
     completeText: 'The dragon is slain. The realm breathes easier — and the Bounty Board pays handsomely.',
   },
+
+  // ── Main Story: "The Sundering" ────────────────────────────────────────────
+  // A linear campaign (chained via requires/next) that gives the existing world
+  // bosses narrative weight and ends with a victory screen (msq_finale.onTurnIn).
+  msq_call: {
+    name: "The Seer's Vision", story: true, giverName: 'The Seer',
+    desc: 'The Seer of Atlas has foreseen a rising darkness. Prove your strength — reach level 5 — and return to her.',
+    next: 'msq_dragon',
+    objectives: [ { type: 'level', level: 5 } ],
+    rewards: { gold: 100, xp: 150 },
+    completeText: 'The Seer: "You are ready. Three Heralds announce the Unnamed One\'s return. They must fall."',
+  },
+  msq_dragon: {
+    name: 'Herald of Flame', story: true, giverName: 'The Seer',
+    desc: 'The first Herald — the Elder Dragon — scorches the western wilds. Slay it to weaken the seal.',
+    minLevel: 8, requires: 'msq_call', next: 'msq_golem',
+    objectives: [ { type: 'defeat_boss', boss: 'elder_dragon' } ],
+    rewards: { gold: 600, xp: 600 },
+  },
+  msq_golem: {
+    name: 'Herald of Stone', story: true, giverName: 'The Seer',
+    desc: 'The Titan Golem, second Herald, stands unmoving in the north. Bring it down.',
+    minLevel: 10, requires: 'msq_dragon', next: 'msq_hydra',
+    objectives: [ { type: 'defeat_boss', boss: 'titan_golem' } ],
+    rewards: { gold: 800, xp: 800 },
+  },
+  msq_hydra: {
+    name: 'Herald of the Void', story: true, giverName: 'The Seer',
+    desc: 'The Void Hydra, last Herald, writhes at the edge of reality. End it, and the seal shatters.',
+    minLevel: 12, requires: 'msq_golem', next: 'msq_finale',
+    objectives: [ { type: 'defeat_boss', boss: 'void_hydra' } ],
+    rewards: { gold: 1000, xp: 1000 },
+  },
+  msq_finale: {
+    name: 'The Unnamed End', story: true, giverName: 'The Seer',
+    desc: 'The seal is broken. Descend into the Abyss and face the Unnamed One itself. This is the end.',
+    minLevel: 15, requires: 'msq_hydra',
+    objectives: [ { type: 'defeat_boss', boss: 'the_unnamed_one' } ],
+    rewards: { gold: 5000, xp: 5000 },
+    onTurnIn: 'showEnding',
+    completeText: 'The Unnamed One unmakes into silence. The realm is saved. You are the Hero of Atlas.',
+  },
 };

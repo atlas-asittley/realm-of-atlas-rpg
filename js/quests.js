@@ -56,6 +56,9 @@ function objectiveStatus(obj, idx, state) {
   } else if (obj.type === 'defeat_boss') {
     need = 1;
     have = game.flags['boss_' + obj.boss + '_dead'] ? 1 : 0;
+  } else if (obj.type === 'level') {
+    need = obj.level || 1;
+    have = Math.min(game.player.lvl || 1, need);
   }
   have = Math.min(have, need);
   return { have, need, done: have >= need };
@@ -120,6 +123,8 @@ function turnInQuest(id) {
   if (def.next && getQuestStatus(def.next) === 'available') {
     toast('New quest available: ' + (questDefs[def.next] ? questDefs[def.next].name : def.next), 'green');
   }
+  // Optional turn-in hook (e.g. the campaign finale triggers the ending screen).
+  if (def.onTurnIn && typeof globalThis[def.onTurnIn] === 'function') globalThis[def.onTurnIn]();
   saveGame();
 }
 

@@ -25,6 +25,9 @@ function objectiveLabel(obj) {
     let nm = enemyTypes[obj.boss] ? enemyTypes[obj.boss].name : obj.boss;
     return `Slay ${nm}`;
   }
+  if (obj.type === 'level') {
+    return `Reach level ${obj.level || 1}`;
+  }
   return '';
 }
 
@@ -60,8 +63,9 @@ function questEntryHtml(id) {
   }
 
   let src = def.giverName ? `<span class="quest-source">${def.giverName}</span>` : '';
-  return `<div class="quest-entry quest-${st}">
-    <div class="quest-entry-head"><span class="quest-name">${def.name}</span>${action}</div>
+  let storyBadge = def.story ? `<span class="quest-story-badge">STORY</span> ` : '';
+  return `<div class="quest-entry quest-${st}${def.story ? ' quest-story' : ''}">
+    <div class="quest-entry-head"><span class="quest-name">${storyBadge}${def.name}</span>${action}</div>
     <div class="quest-desc">${def.desc} ${src}</div>
     ${objHtml}
     <div class="quest-reward">Reward: ${questRewardLabel(def)}</div>
@@ -82,9 +86,26 @@ function renderQuestLog() {
     else if (st === 'available') available.push(id);
     else if (st === 'done') done.push(id);
   }
+  // Story quests sort to the top of each group.
+  let storyFirst = (a, b) => (questDefs[a].story ? 0 : 1) - (questDefs[b].story ? 0 : 1);
+  active.sort(storyFirst); available.sort(storyFirst); done.sort(storyFirst);
   let html = renderQuestGroup('IN PROGRESS', active)
            + renderQuestGroup('AVAILABLE', available)
            + renderQuestGroup('COMPLETED', done);
   if (!html) html = '<div class="quest-empty">No quests yet. Explore the realm and talk to the townsfolk — bounties await.</div>';
   list.innerHTML = html;
+}
+
+// ─── ENDING ─────────────────────────────────────────────────────────────────
+// Triggered by the campaign finale's onTurnIn hook (see questDefs.msq_finale).
+// Marks the run as won and shows the victory screen; the player keeps their save
+// and can keep exploring afterward.
+function showEnding() {
+  game.flags.gameWon = true;
+  closeQuestLog();
+  document.getElementById('ending-screen').style.display = 'flex';
+}
+
+function closeEnding() {
+  document.getElementById('ending-screen').style.display = 'none';
 }

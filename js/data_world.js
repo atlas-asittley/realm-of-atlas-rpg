@@ -127,6 +127,7 @@ const npcs = {
     { x:34, y:26, name:'Sparring Master', drawKey:'guard', dialog:'Step into the ring and test your skills! No death here — only glory.', sparring:true },
     { x:7,  y:14, name:'Librarian',      drawKey:'elder', dialog:'Browse our collection, adventurer.', library:true },
     { x:16, y:14, name:'Bounty Master',  drawKey:'guard', dialog:'The town bounty board. Clear the roads of monsters and the realm pays well.', questBoard:true },
+    { x:24, y:14, name:'The Seer',       drawKey:'elder', dialog:'Dark omens gather, child. The realm will need a hero — and I have foreseen that it may be you.', questGiver:'msq_call' },
   ],
   dragons_gate: [
     { x:20, y:4,  name:"Commander Rael",  drawKey:'guard',      dialog:"Dragon's Gate stands between civilization and the abyss. We hold the line here. Move along, soldier." },
