@@ -16,18 +16,18 @@ const trialDefs = {
     name: 'Trial of Embers', element: 'fire',
     desc: 'Five waves of living flame. Ice resistance is your friend; fire weapons are not.',
     waves: 5, enemies: ['ember_sprite', 'lava_crab', 'fire_elemental'], boss: 'molten_golem',
-    rewardXp: 80, rewardGold: 60,
+    rewardXp: 55, rewardGold: 45,
   },
   frost: {
     name: 'Trial of Frost', element: 'ice',
     desc: 'Five waves born of the deep cold. Bring fire, and warm clothing.',
     waves: 5, enemies: ['frost_sprite', 'snow_wolf', 'ice_revenant'], boss: 'ancient_frost_giant',
-    rewardXp: 90, rewardGold: 70,
+    rewardXp: 65, rewardGold: 50,
   },
   void: {
     name: 'Trial of the Void', element: 'dark',
     desc: 'Five waves drawn from the Abyss itself. Holy power cuts deepest here.',
     waves: 5, enemies: ['abyssal_crawler', 'void_wraith', 'reality_ripper'], boss: 'elder_thing',
-    rewardXp: 110, rewardGold: 85,
+    rewardXp: 80, rewardGold: 60,
   },
 };

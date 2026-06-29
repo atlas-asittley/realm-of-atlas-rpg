@@ -12,11 +12,11 @@
 //     reqLevel:number?    — minimum player level to hire (default 1)
 //   }
 const companionDefs = {
-  kael: { name: 'Kael the Sellsword', icon: '🗡️', role: 'damage', base: 8,  scale: 1.5, cost: 300, reqLevel: 1,
+  kael: { name: 'Kael the Sellsword', icon: '🗡️', role: 'damage', base: 8,  scale: 1.2, cost: 300, reqLevel: 1,
     desc: 'A reliable blade who strikes the enemy every round.' },
-  mira: { name: 'Mira the Acolyte',   icon: '✨', role: 'healer', base: 6,  scale: 1.2, cost: 400, reqLevel: 1,
+  mira: { name: 'Mira the Acolyte',   icon: '✨', role: 'healer', base: 6,  scale: 1.0, cost: 400, reqLevel: 1,
     desc: 'A gentle healer who mends your wounds every round.' },
-  grok: { name: 'Grok the Berserker', icon: '🪓', role: 'damage', base: 15, scale: 2.0, cost: 800, reqLevel: 8,
+  grok: { name: 'Grok the Berserker', icon: '🪓', role: 'damage', base: 15, scale: 1.6, cost: 800, reqLevel: 8,
     desc: 'A savage axe that hits far harder — for a price.' },
 };
 

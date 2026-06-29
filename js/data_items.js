@@ -24,13 +24,13 @@ const itemDefs = {
   frost_shard:   { name:'Frost Shard',   type:'material', value:15, icon:'❄', color:'#2ecc71', rarity:'uncommon', desc:'A sliver of everlasting ice.' },
   void_essence:  { name:'Void Essence',  type:'material', value:40, icon:'🌌', color:'#3498db', rarity:'rare',     desc:'Condensed nothingness. Handle with care.' },
   // ── Craftable results (see data_recipes.js). No classRestriction — any class may use. ──
-  hide_armor:      { name:'Hide Armor',      type:'armor',  slot:'CHEST',     def:6,  value:90,  icon:'🛡', color:'#9d9d9d', rarity:'common',   desc:'Sturdy armor stitched from monster hide.' },
+  hide_armor:      { name:'Hide Armor',      type:'armor',  slot:'CHEST',     def:5,  value:90,  icon:'🛡', color:'#2ecc71', rarity:'uncommon', desc:'Sturdy armor stitched from monster hide.' },
   traveler_boots:  { name:"Traveler's Boots", type:'armor', slot:'FEET',      def:3,  value:120, icon:'🥾', color:'#2ecc71', rarity:'uncommon', statBonuses:{DEX:1}, desc:'Light boots for the long road.' },
   bone_charm:      { name:'Bone Charm',      type:'armor',  slot:'AMULET',    def:0,  value:150, icon:'📿', color:'#2ecc71', rarity:'uncommon', statBonuses:{STR:1,CON:1}, desc:'A charm of bound bone. Wards the wearer.' },
   reinforced_blade:{ name:'Reinforced Blade', type:'weapon', slot:'MAIN_HAND', atk:9,  value:200, icon:'⚔', color:'#2ecc71', rarity:'uncommon', desc:'A dependable forged blade. Anyone can wield it.' },
   ember_brand:     { name:'Ember Brand',     type:'weapon', slot:'MAIN_HAND', atk:14, value:450, icon:'🔥', color:'#3498db', rarity:'rare',     damageType:'fire', desc:'A blade that burns with forged ember.' },
   frost_edge:      { name:'Frost Edge',      type:'weapon', slot:'MAIN_HAND', atk:14, value:450, icon:'❄', color:'#3498db', rarity:'rare',     damageType:'ice',  desc:'Its edge never melts, and never warms.' },
-  void_cleaver:    { name:'Void Cleaver',    type:'weapon', slot:'MAIN_HAND', atk:22, value:900, icon:'🌌', color:'#9b59b6', rarity:'epic',     damageType:'dark', desc:'Forged from void essence. It hungers.' },
+  void_cleaver:    { name:'Void Cleaver',    type:'weapon', slot:'MAIN_HAND', atk:20, value:900, icon:'🌌', color:'#9b59b6', rarity:'epic',     damageType:'dark', desc:'Forged from void essence. It hungers.' },
   // ── Common ────────────────────────────────────────────────────────────────
   wooden_sword:  { name:'Wooden Sword',    type:'weapon', slot:'MAIN_HAND', atk:3,  value:0,    icon:'⚔', color:'#9d9d9d', rarity:'common',    classRestriction:['paladin'] },
   cloth_armor:   { name:'Cloth Armor',     type:'armor',  slot:'CHEST',     def:2,  value:0,    icon:'🛡', color:'#9d9d9d', rarity:'common'    },
