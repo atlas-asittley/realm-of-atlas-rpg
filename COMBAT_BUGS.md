@@ -45,6 +45,11 @@ were changed. (The owner can still choose to rebalance later — see "If you'd r
 - Implement real buff-removal for Dispel Magic (needs enemies to actually gain buffs first).
 - Give Slow a true action-skip instead of an ATK reduction.
 
+**Decision (2026-06-29):** kept the code's existing (play-tested) damage values and only aligned
+the descriptions. Honoring the stale `mult` data would, for example, silently cut Meteor Swarm
+from ~12×INT to 3×INT — a large balance swing that shouldn't be made without playtesting. Revisit
+deliberately if/when the combat is being rebalanced as a whole.
+
 ## Notes / good news from the audit
 
 - Core damage pipeline ordering (bless → power strike → slow → resist → shield → divine shield)
