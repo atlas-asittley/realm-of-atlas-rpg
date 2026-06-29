@@ -6,16 +6,27 @@
 //             ui_equipment.js (renderEquippedTab, equipFromInventory, unequipSlot, EQUIP_SLOT_LABELS).
 
 // ─── CLASS RESTRICTION ────────────────────────────────────────────────────────
-// Returns true if the player's class can equip this item.
-// Warriors bypass all restrictions. classRestriction:[] means warrior only.
-function canEquipItem(itemId) {
+// Canonical class order, Warrior first (Warriors can equip everything).
+const ALL_CLASSES = ['warrior', 'ranger', 'mage', 'paladin', 'rogue'];
+
+// Single source of truth: which classes can equip a given item, under current rules.
+//   - no classRestriction field → all classes
+//   - classRestriction:[]       → Warrior only
+//   - classRestriction:[...]    → Warrior + the listed classes
+// Both canEquipItem (gating) and the shop "usable by" label read this so they
+// never drift apart.
+function classesThatCanEquip(itemId) {
   let item = itemDefs[itemId];
-  if (!item) return false;
-  let playerClass = game.player.class || 'warrior';
-  if (playerClass === 'warrior') return true;
+  if (!item) return [];
   let restriction = item.classRestriction;
-  if (restriction === undefined || restriction === null) return true;
-  return restriction.includes(playerClass);
+  if (restriction === undefined || restriction === null) return ALL_CLASSES.slice();
+  return ALL_CLASSES.filter(c => c === 'warrior' || restriction.includes(c));
+}
+
+// Returns true if the player's class can equip this item.
+function canEquipItem(itemId) {
+  if (!itemDefs[itemId]) return false;
+  return classesThatCanEquip(itemId).includes(game.player.class || 'warrior');
 }
 
 // ─── PASSIVE HELPERS ──────────────────────────────────────────────────────────

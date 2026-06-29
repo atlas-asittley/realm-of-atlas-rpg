@@ -85,13 +85,20 @@ function renderShopItems(items, buyFn) {
     let discountNote = price < item.value ? `<span class="shop-discount">${item.value}g</span> ` : '';
     let badge = info.badge ? `<span class="shop-rarity-badge" style="color:${info.color}">${info.badge}</span> ` : '';
     let nameColor = restricted ? '#555' : info.color;
-    let restrictionLabel = '';
-    if (restricted) {
-      let classNames = item.classRestriction.map(c => CLASS_DEFS[c] ? CLASS_DEFS[c].name : c).join('/');
-      restrictionLabel = ` <span class="shop-class-restriction">${classNames} Only</span>`;
+    // "Usable by" line: shown for every equippable item (anything with a slot) so
+    // shoppers can see which classes each weapon/armor is for, regardless of the
+    // class they're currently playing. Class membership comes from the shared
+    // classesThatCanEquip() helper so it always matches equip gating.
+    let usableLine = '';
+    if (item.slot) {
+      let usable = classesThatCanEquip(itemId);
+      let icons = usable.map(c => CLASS_DEFS[c] ? CLASS_DEFS[c].icon : '').join(' ');
+      let names = usable.map(c => CLASS_DEFS[c] ? CLASS_DEFS[c].name : c).join(', ');
+      let note = (usable.length === 1 && usable[0] === 'warrior') ? ' (Warrior only)' : '';
+      usableLine = `<div class="shop-usable-by" title="Usable by: ${names}">Usable: ${icons}${note}</div>`;
     }
     let typeIco = item.damageType ? damageTypeIcon(item.damageType) : '';
-    div.innerHTML = `<div class="shop-item-info"><div class="shop-item-name" style="color:${nameColor}">${item.icon} ${badge}${typeIco}${item.name}${restrictionLabel}</div><div class="shop-item-stat">${itemStatText(item)} <span class="shop-rarity-label" style="color:${nameColor}">[${info.label}]</span></div></div><div class="shop-item-price ${canAfford?'':'cant-afford'}">${discountNote}${price}g</div>`;
+    div.innerHTML = `<div class="shop-item-info"><div class="shop-item-name" style="color:${nameColor}">${item.icon} ${badge}${typeIco}${item.name}</div><div class="shop-item-stat">${itemStatText(item)} <span class="shop-rarity-label" style="color:${nameColor}">[${info.label}]</span></div>${usableLine}</div><div class="shop-item-price ${canAfford?'':'cant-afford'}">${discountNote}${price}g</div>`;
     div.onclick = () => buyFn(itemId);
     attachTooltip(div, itemId);
     container.appendChild(div);
@@ -288,6 +295,22 @@ function renderTrainer() {
   }
 }
 
+// Single source of truth for skill requirements. Returns the first unmet
+// requirement as { stat, val } or null when every requirement is satisfied.
+// Used by both the trainer display (greying out locked skills) and learnSkill
+// (gating the actual purchase) so the two never drift apart.
+function getUnmetSkillRequirement(skill, p) {
+  p = p || game.player;
+  for (let [stat, val] of Object.entries(skill.req || {})) {
+    if ((p[stat] || 0) < val) return { stat, val };
+  }
+  return null;
+}
+
+function meetsSkillRequirements(skill, p) {
+  return !getUnmetSkillRequirement(skill, p);
+}
+
 function renderLearnSkills() {
   let p = game.player;
   let learned = p.learnedSkills || [];
@@ -299,16 +322,21 @@ function renderLearnSkills() {
     let isLearned = learned.includes(skillId);
     let reqEntries = Object.entries(skill.req);
     let [reqStat, reqVal] = reqEntries.length > 0 ? reqEntries[0] : [null, 0];
-    let meetsReq = !reqStat || (p[reqStat] || 0) >= reqVal;
+    let meetsReq = meetsSkillRequirements(skill, p);
     let canAfford = (p.skillPoints || 0) >= skill.cost;
+    // A skill is "locked" when the player has not yet met its requirements.
+    // Locked rows are greyed out and made non-interactive. Affordability
+    // (enough skill points) is a separate gate that only disables the button.
+    let isLocked = !isLearned && !meetsReq;
     let div = document.createElement('div');
-    div.className = 'skill-learn-row' + (isLearned ? ' skill-learned' : '');
+    div.className = 'skill-learn-row' + (isLearned ? ' skill-learned' : '') + (isLocked ? ' skill-locked' : '');
     let passiveTag = skill.passive ? `<span class="skill-passive-badge">PASSIVE</span>` : '';
     let statusBtn = isLearned
       ? `<span class="skill-learned-badge">LEARNED</span>`
       : `<button class="trainer-btn${(meetsReq && canAfford) ? '' : ' trainer-btn-disabled'}" onclick="learnSkill('${skillId}')"${(meetsReq && canAfford) ? '' : ' disabled'}>${skill.cost} SP</button>`;
     let reqColor = meetsReq ? '#70a0e0' : '#664444';
     let reqLine = reqStat ? `Req: ${reqStat} ${reqVal} (yours: ${p[reqStat]||10})` : 'No requirements';
+    if (isLocked) div.title = `Requires ${reqStat} ${reqVal} to learn ${skill.name}`;
     div.innerHTML = `<span class="skill-icon">${skill.icon}</span><div class="skill-learn-info"><div class="skill-learn-name">${skill.name}${passiveTag}</div><div class="skill-learn-desc">${skill.desc}</div><div class="skill-learn-req" style="color:${reqColor}">${reqLine}</div></div>${statusBtn}`;
     container.appendChild(div);
   }
@@ -333,11 +361,13 @@ function learnSkill(skillId) {
   let skill = skillDefs[skillId];
   if (!skill) return;
   if ((p.learnedSkills || []).includes(skillId)) return;
-  let reqEntries = Object.entries(skill.req);
-  if (reqEntries.length > 0) {
-    let [reqStat, reqVal] = reqEntries[0];
-    if ((p[reqStat] || 0) < reqVal) { toast(`Need ${reqStat} ${reqVal} to learn ${skill.name}!`, 'red'); return; }
+  // Enforce class restriction (the trainer list already filters these out; this guards
+  // against any other entry path, e.g. the debug console). Mirrors renderLearnSkills.
+  if (skill.classRestriction && !skill.classRestriction.includes(p.class || 'warrior')) {
+    toast(`Your class cannot learn ${skill.name}!`, 'red'); return;
   }
+  let unmet = getUnmetSkillRequirement(skill, p);
+  if (unmet) { toast(`Need ${unmet.stat} ${unmet.val} to learn ${skill.name}!`, 'red'); return; }
   if ((p.skillPoints || 0) < skill.cost) { toast('Not enough skill points!', 'red'); return; }
   p.skillPoints -= skill.cost;
   if (!p.learnedSkills) p.learnedSkills = [];
