@@ -28,6 +28,12 @@ function objectiveLabel(obj) {
   if (obj.type === 'level') {
     return `Reach level ${obj.level || 1}`;
   }
+  if (obj.type === 'talk') {
+    return `Speak with ${obj.npc}`;
+  }
+  if (obj.type === 'reach') {
+    return `Travel to ${obj.mapName || obj.map}`;
+  }
   return '';
 }
 

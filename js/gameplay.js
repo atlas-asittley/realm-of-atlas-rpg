@@ -120,6 +120,7 @@ function enterLocation(mapId, x, y, indicatorText, toastMsg, toastColor, message
   showFloorIndicator(indicatorText, 2000);
   toast(toastMsg, toastColor);
   msg(message);
+  if (typeof recordReach === 'function') recordReach(mapId);
 }
 
 // ─── MESSAGES & TOASTS ───────────────────────────────────────────────────────
@@ -285,6 +286,8 @@ function movePlayer(dx, dy) {
 function interactNPC(npc) {
   // Track which faction's shop (if any) is being opened so prices reflect reputation.
   activeShopFaction = factionOfNpc(npc);
+  // Record the conversation for any active 'talk' quest objective (safe for every NPC branch).
+  if (typeof recordNpcTalk === 'function') recordNpcTalk(npc);
   if (npc.questBoard) { msg(npc.dialog); openQuestLog(); return; }
   if (npc.questGiver) { handleQuestGiver(npc); return; }
   if (npc.dungeonGuard) {
@@ -418,6 +421,7 @@ function enterDungeon(floor, direction = 'down') {
   showFloorIndicator(`DUNGEON LEVEL ${floor} / 3`, 2500);
   toast(`Dungeon level ${floor} / 3`, 'blue');
   msg(`Dungeon level ${floor} of 3...`);
+  if (typeof recordReach === 'function') recordReach(game.currentMap);
 }
 
 function leaveDungeon() {
@@ -432,6 +436,7 @@ function enterWorldMapAt(x, y, leaveMsg) {
   showFloorIndicator('WORLD MAP', 2500);
   toast('Entered World Map', 'blue');
   msg(leaveMsg);
+  if (typeof recordReach === 'function') recordReach('world');
 }
 
 function enterWorldMap() {
@@ -476,6 +481,7 @@ function enterTrainingGrounds() {
   showFloorIndicator('TRAINING GROUNDS', 2000);
   toast('Entered Training Grounds', 'green');
   msg('You enter the town training grounds. Watch your step — the place is crawling with rats!');
+  if (typeof recordReach === 'function') recordReach('training_grounds');
 }
 
 function leaveTrainingGrounds() {
@@ -498,6 +504,7 @@ function enterNewArea(mapId, indicatorText, toastMsg, entryMsg, wx, wy) {
   showFloorIndicator(indicatorText, 2000);
   toast(toastMsg, 'red');
   msg(entryMsg);
+  if (typeof recordReach === 'function') recordReach(mapId);
 }
 
 function enterVolcanicWastes() {

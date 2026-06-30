@@ -196,11 +196,14 @@ function openStats() {
   let xpPct = Math.floor(p.xp / p.xpNext * 100);
   let clsDef = p.class ? CLASS_DEFS[p.class] : null;
   let clsLine = clsDef ? `<div class="derived-row"><span class="derived-label">CLASS</span><span class="derived-val">${clsDef.icon} ${clsDef.name}</span></div>` : '';
+  let ngpTier = (game.flags && game.flags.ngPlus) || 0;
+  let ngpLine = ngpTier > 0 ? `<div class="derived-row"><span class="derived-label">NEW GAME+</span><span class="derived-val" style="color:#f1c40f">Cycle ${ngpTier}</span></div>` : '';
   document.getElementById('stats-content').innerHTML = `
     <div class="stats-section">
       <div class="stats-section-title">CHARACTER</div>
       <div class="stats-derived">
         ${clsLine}
+        ${ngpLine}
         <div class="derived-row"><span class="derived-label">LEVEL</span><span class="derived-val">${p.lvl}</span></div>
         <div class="derived-row"><span class="derived-label">XP</span><span class="derived-val">${p.xp} / ${p.xpNext} (${xpPct}%)</span></div>
         <div class="derived-row"><span class="derived-label">KILLS</span><span class="derived-val">${game.kills}</span></div>

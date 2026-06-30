@@ -608,12 +608,12 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
 .sell-confirm-cancel:hover { background: linear-gradient(180deg, #1a1a1a 0%, #111 100%); border-color: #555; color: #aaa; }
 
 /* ── NEW GAME CONFIRM MODAL ── */
-#new-game-confirm-overlay {
+#new-game-confirm-overlay, #ngplus-confirm-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(4,4,14,0.85);
   z-index: 50; display: none; align-items: center; justify-content: center;
 }
-#new-game-confirm-box {
+#new-game-confirm-box, #ngplus-confirm-box {
   background: #0a0a1a;
   border: 1px solid #8b5e1a;
   border-radius: 6px;
@@ -622,14 +622,14 @@ canvas { display: block; margin: 0 auto; image-rendering: pixelated; }
   text-align: center;
   box-shadow: 0 0 40px rgba(139,94,26,0.25);
 }
-#new-game-confirm-text {
+#new-game-confirm-text, #ngplus-confirm-text {
   color: #ccc;
   font-size: 9px;
   letter-spacing: 0.5px;
   margin-bottom: 16px;
   line-height: 1.6;
 }
-#new-game-confirm-btns { display: flex; gap: 10px; justify-content: center; }
+#new-game-confirm-btns, #ngplus-confirm-btns { display: flex; gap: 10px; justify-content: center; }
 
 /* ── STATS SCREEN ── */
 #stats-screen {

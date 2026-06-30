@@ -80,6 +80,7 @@
     <button class="hud-menu-btn" onclick="openOutOfCombatSkills();closeHudMenu()">&#9733; SKILLS</button>
     <button class="hud-menu-btn" onclick="openQuestLog();closeHudMenu()">&#128220; QUESTS</button>
     <button class="hud-menu-btn" onclick="openReputation();closeHudMenu()">&#127983; FACTIONS</button>
+    <button class="hud-menu-btn hud-new-game-btn" onclick="requestNewGamePlus()">&#8682; NEW GAME+</button>
     <button class="hud-menu-btn hud-new-game-btn" onclick="confirmNewGame()">&#8635; NEW GAME</button>
   </div>
   <button id="hud-menu-toggle" onclick="toggleHudMenu()">&#9776; MENU</button>
@@ -439,9 +440,21 @@
       oblivion holds once more.<br><br>
       The bards will sing of this day — of the Hero of Atlas who walked into the Abyss and
       walked back out.<br><br>
-      <span class="ending-sub">Your journey continues — the realm is yours to roam.</span>
+      <span class="ending-sub">Your journey continues — the realm is yours to roam, or begin anew.</span>
     </div>
     <button class="btn" style="margin-top:16px;width:100%" onclick="closeEnding()">CONTINUE</button>
+    <button class="btn" style="margin-top:8px;width:100%" onclick="requestNewGamePlus()">&#8635; BEGIN NEW GAME+</button>
+  </div>
+</div>
+
+<!-- NEW GAME+ CONFIRM -->
+<div id="ngplus-confirm-overlay">
+  <div id="ngplus-confirm-box">
+    <div id="ngplus-confirm-text">Begin New Game+? Your hero — level, stats, skills, gear and gold — carries over, but quests, bounties and bosses reset and all enemies grow far stronger.</div>
+    <div id="ngplus-confirm-btns">
+      <button class="sell-confirm-btn sell-confirm-cancel" onclick="cancelNewGamePlus()">CANCEL</button>
+      <button class="sell-confirm-btn sell-confirm-yes" onclick="startNewGamePlus()">BEGIN</button>
+    </div>
   </div>
 </div>
 
@@ -528,6 +541,7 @@
 <script src="js/quests.js"></script>
 <script src="js/crafting.js"></script>
 <script src="js/encounters_special.js"></script>
+<script src="js/newgameplus.js"></script>
 <script src="js/combat_mechanics.js"></script>
 <script src="js/combat_player.js"></script>
 <script src="js/combat_enemy.js"></script>

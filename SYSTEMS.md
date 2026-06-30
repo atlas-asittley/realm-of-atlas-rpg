@@ -12,8 +12,13 @@ already serializes — so new fields are save-safe automatically. Guard reads ag
 
 ## Quests — `data_quests.js`, `quests.js`, `ui_quests.js`
 Objective types: `slay` (enemy typeKey), `collect` (item id), `defeat_boss` (enemy typeKey →
-`boss_<key>_dead` flag), `level` (player level). State: `game.flags.quests[id]` =
-`{status:'active'|'done', slayBase, _notified}`; lifetime kills in `game.flags.killCounts`.
+`boss_<key>_dead` flag), `level` (player level), `talk` (`npc` = NPC name), `reach` (`map` = map id,
+optional `mapName` label). State: `game.flags.quests[id]` =
+`{status:'active'|'done', slayBase, satisfied, _notified}`; lifetime kills in `game.flags.killCounts`.
+`talk`/`reach` are binary objectives recorded into `state.satisfied[objIdx]` by `recordNpcTalk`
+(called from `interactNPC`) and `recordReach` (called from the map-transition helpers in gameplay.js:
+`enterLocation`/`enterWorldMapAt`/`enterNewArea`/`enterDungeon`/`enterTrainingGrounds`); only events
+*after* the quest is accepted count.
 Story quests set `story:true` (sort to top, STORY badge) and can chain via `requires`/`next`;
 the finale uses `onTurnIn:'showEnding'`. Rewards: `{gold, xp, items:[], rep:{factionId:n}}`.
 
@@ -66,6 +71,19 @@ greeting. State: `game.flags.reputation`. FACTIONS HUD button → Reputation scr
 XP, guaranteed loot) — applied at the area/dungeon/training spawn sites. `rollRoadsideEvent`
 (world-map movement) fires a treasure cache, a restorative wayshrine (rare +1 stat), or an elite
 ambush.
+
+## New Game+ — `newgameplus.js`
+Unlocked once `game.flags.gameWon` is set (campaign finale). `startNewGamePlus()` (offered on the
+victory screen and the HUD menu, gated by `requestNewGamePlus`) bumps `game.flags.ngPlus`, resets the
+replayable world (`quests`, `killCounts`, `talkedTo`, all `boss_*_dead` flags, opened chests) and
+repaints the world-boss marker tiles (`restoreWorldBossMarkers`), then drops the (fully intact)
+character back in town. **Character carries over** — level, stats, skills, gear, gold, companions,
+reputation; only world progress resets.
+
+`applyNgPlusScaling(enemy)` multiplies a fight's stats by the NG+ tier (hp ×(1+0.6·t), atk ×(1+0.35·t),
+def ×(1+0.3·t), xp/gold ×(1+0.5·t)). It is called on the **`combatEnemy` copy in `startCombat`** only,
+so map instances/`enemyTypes` stay pristine and trials/sparring (which never call `startCombat`) are
+unscaled. **Tier 0 is a no-op** — a first playthrough is exactly the tuned base game.
 
 ---
 

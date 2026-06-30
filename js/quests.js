@@ -26,6 +26,40 @@ function recordEnemyKill(enemy) {
   checkQuestReadyToasts();
 }
 
+// Marks a binary objective (talk/reach) satisfied on every ACTIVE quest whose objective of `type`
+// matches `value` (obj.npc for talk, obj.map for reach). Only counts events after acceptance.
+function satisfyBinaryObjective(type, matchKey, value) {
+  ensureQuestState();
+  let changed = false;
+  for (let id in game.flags.quests) {
+    let s = game.flags.quests[id];
+    if (!s || s.status !== 'active') continue;
+    let def = questDefs[id];
+    if (!def) continue;
+    def.objectives.forEach((obj, idx) => {
+      if (obj.type === type && obj[matchKey] === value) {
+        if (!s.satisfied) s.satisfied = {};
+        if (!s.satisfied[idx]) { s.satisfied[idx] = true; changed = true; }
+      }
+    });
+  }
+  if (changed) { checkQuestReadyToasts(); saveGame(); }
+}
+
+// Called from interactNPC (gameplay.js) after any NPC interaction. npc.name is the match key.
+function recordNpcTalk(npc) {
+  if (!npc || !npc.name) return;
+  if (!game.flags.talkedTo) game.flags.talkedTo = {};
+  game.flags.talkedTo[npc.name] = true;
+  satisfyBinaryObjective('talk', 'npc', npc.name);
+}
+
+// Called from map-transition helpers (gameplay.js) with the destination map id.
+function recordReach(mapId) {
+  if (!mapId) return;
+  satisfyBinaryObjective('reach', 'map', mapId);
+}
+
 function questPrereqMet(id) {
   let def = questDefs[id];
   if (!def) return false;
@@ -59,6 +93,11 @@ function objectiveStatus(obj, idx, state) {
   } else if (obj.type === 'level') {
     need = obj.level || 1;
     have = Math.min(game.player.lvl || 1, need);
+  } else if (obj.type === 'talk' || obj.type === 'reach') {
+    // Binary objectives satisfied by an event after the quest is accepted; recorded into
+    // state.satisfied[idx] by recordNpcTalk / recordReach.
+    need = 1;
+    have = (state && state.satisfied && state.satisfied[idx]) ? 1 : 0;
   }
   have = Math.min(have, need);
   return { have, need, done: have >= need };

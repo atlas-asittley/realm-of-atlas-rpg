@@ -15,12 +15,18 @@
 //     doneText:    string? — what the giver says after completion
 //   }
 //
-// Objective types (v1 — each maps to a hook the engine can already observe):
+// Objective types (each maps to a hook the engine can already observe):
 //   { type:'slay',        enemy:'<enemyTypeKey>', count:N }  — kills counted from acceptance onward
 //   { type:'collect',     item:'<itemId>',        count:N }  — counted from current inventory; consumed on turn-in
 //   { type:'defeat_boss', boss:'<enemyTypeKey>' }            — satisfied by the boss-dead flag
+//   { type:'level',       level:N }                          — satisfied when player reaches the level
+//   { type:'talk',        npc:'<npc.name>' }                 — speak to that NPC while the quest is active
+//   { type:'reach',       map:'<mapId>', mapName?:'<label>' }— enter that map while the quest is active
 //
-// Enemy type keys come from enemyTypes (data_enemies.js); item ids from itemDefs (data_items.js).
+// Enemy type keys come from enemyTypes (data_enemies.js); item ids from itemDefs (data_items.js);
+// npc names from npcs.* (data_world.js); map ids are game.currentMap values (e.g. 'frozen_peaks').
+// 'talk'/'reach' are binary: satisfaction is recorded into game.flags.quests[id].satisfied[objIdx]
+// by recordNpcTalk / recordReach (quests.js), and only counts for events AFTER the quest is accepted.
 
 const questDefs = {
   // Folded-in legacy quest (was hardcoded in gameplay.js / combat.js).
@@ -58,6 +64,23 @@ const questDefs = {
     requires: 'goblin_trouble',
     objectives: [ { type: 'slay', enemy: 'bandit', count: 8 } ],
     rewards: { gold: 280, xp: 220 },
+  },
+  a_word_with_borin: {
+    name: 'A Word with the Smith',
+    giverName: 'Bounty Board',
+    desc: 'The bounty clerk needs word carried to Blacksmith Borin in town. Go and speak with him.',
+    objectives: [ { type: 'talk', npc: 'Blacksmith Borin' } ],
+    rewards: { gold: 80, xp: 100 },
+    completeText: 'Borin nods at the message. "Tell the board I\'ll have the order ready." Your errand is done.',
+  },
+  scout_the_peaks: {
+    name: 'Scout the Frozen Peaks',
+    giverName: 'Bounty Board',
+    desc: 'Travelers report strange lights in the Frozen Peaks. Journey there and see for yourself.',
+    minLevel: 6,
+    objectives: [ { type: 'reach', map: 'frozen_peaks', mapName: 'the Frozen Peaks' } ],
+    rewards: { gold: 200, xp: 180, items: ['big_hp_potion'] },
+    completeText: 'You return with word of the Peaks. The bounty board pays for the reconnaissance.',
   },
   the_dragons_end: {
     name: "The Dragon's End",

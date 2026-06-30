@@ -52,6 +52,8 @@ function renderCombatLog() {
 
 function startCombat(index) {
   combatEnemy = { ...enemies[index] };
+  // NG+ scaling: toughen the fight copy by the New Game+ tier (no-op on a first playthrough).
+  if (typeof applyNgPlusScaling === 'function') applyNgPlusScaling(combatEnemy);
   combatEnemyIndex = index;
   isSparring = false;
   isTrial = false;
